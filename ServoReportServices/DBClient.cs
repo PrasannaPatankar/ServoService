@@ -17,6 +17,7 @@ namespace TrackingServices
 
         SqlConnection con;
 
+
         public void OpenConection()
         {
             con = new SqlConnection(ConnectionString);
