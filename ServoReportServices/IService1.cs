@@ -33,6 +33,11 @@ namespace ServoReportServices
 
         [OperationContract]
         [WebInvoke(Method = "GET", BodyStyle = WebMessageBodyStyle.Bare, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json,
+        UriTemplate = "/Get_SSRPerformanceReport/{FrDt}/{ToDt}")]
+        List<SSRPerformanceReport> Get_SSRPerformanceReport(string FrDt, string ToDt);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", BodyStyle = WebMessageBodyStyle.Bare, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json,
         UriTemplate = "/Get_UserID/{Username}/{Password}/{Role}")]
         string Get_UserID(string Username, string Password, string Role);
     }

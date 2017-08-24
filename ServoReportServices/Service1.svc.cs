@@ -179,5 +179,56 @@ namespace ServoReportServices
         {
             throw new NotImplementedException();
         }
+
+        public List<SSRPerformanceReport> Get_SSRPerformanceReport(string FrDt, string ToDt)
+        {
+
+            try
+            {
+                DataSet ds = new DataSet();
+                con = new SqlConnection("Data Source = IDTP362;Initial Catalog = ServoNew; User ID = sa; Password=synerzip");
+                cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "ProSSRPerformanceReortGP";
+                cmd.Connection = con;
+
+                cmd.Parameters.Add(new SqlParameter("@FrDt", SqlDbType.VarChar, 20)).Value = FrDt;
+                cmd.Parameters.Add(new SqlParameter("@ToDt", SqlDbType.VarChar, 20)).Value = ToDt;
+                adapt = new SqlDataAdapter();
+                adapt.SelectCommand = cmd;
+                adapt.Fill(ds);
+
+                DataTable table1 = new DataTable();
+                table1 = ds.Tables[0];
+                List<SSRPerformanceReport> Get_SSRPerformanceReport = new List<SSRPerformanceReport>();
+
+                Get_SSRPerformanceReport = (from DataRow dr in table1.Rows
+                                        select new SSRPerformanceReport()
+                                        {
+                                            Credit = Convert.ToString(dr["Credit"]),
+                                            Debit = Convert.ToString(dr["Debit"]),
+                                            EmployeeCode = Convert.ToString(dr["EmployeeCode"]),
+                                            EmployeeName = Convert.ToString(dr["EmployeeName"]),
+                                            Outstandings = Convert.ToString(dr["Outstandings"]),
+                                            Receipts = Convert.ToString(dr["Receipts"]),
+                                            SaleInLtr = Convert.ToString(dr["SaleInLtr"]),
+                                            SaleInRs = Convert.ToString(dr["SaleInRs"]),
+                                            
+                                        }).ToList();
+              
+
+                return Get_SSRPerformanceReport;
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
     }
 }
