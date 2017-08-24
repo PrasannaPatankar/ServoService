@@ -49,7 +49,7 @@ namespace ServoReportServices
                 cmd.CommandText = "ProGetPrimarySecSalesReportGP";
                 cmd.Connection = con;
 
-                cmd.Parameters.Add(new SqlParameter("@Year", SqlDbType.VarChar, 20)).Value = Year+"-04-01";
+                cmd.Parameters.Add(new SqlParameter("@Year", SqlDbType.VarChar, 20)).Value = Year + "-04-01";
                 adapt = new SqlDataAdapter();
                 adapt.SelectCommand = cmd;
                 adapt.Fill(ds);
@@ -149,7 +149,7 @@ namespace ServoReportServices
                     });
 
                 }
-                
+
                 return Get_SSRIncentiveReport;
 
             }
@@ -162,6 +162,22 @@ namespace ServoReportServices
             {
                 con.Close();
             }
+        }
+
+        public string Get_UserID(string Username, string Password, string Role)
+        {
+            string Query = "Select UserID from User_Master um, Roles r Where um.role_ID = r.role_ID And LoginName = '" + Username + "' And Password = '" + Password + "' And r.Role_ID = (Select Role_ID From Roles Where Role_Name = '" + Role + "')";
+            DBClient db = new DBClient();
+            object obj = db.ExecuteScalar(Query);
+            if (obj == null)
+                return "0";
+            else
+                return db.ExecuteScalar(Query).ToString();
+        }
+
+        public string Get_UserID(string Username, string Password, string Role, string type)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -43,6 +43,11 @@ namespace TrackingServices
             cmd.ExecuteNonQuery();
         }
 
+        public object ExecuteScalar(string Query_)
+        {
+            SqlCommand cmd = new SqlCommand(Query_, con);
+            return cmd.ExecuteScalar();
+        }
 
         public SqlDataReader DataReader(string Query_)
         {
