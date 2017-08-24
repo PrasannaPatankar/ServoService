@@ -69,6 +69,7 @@
     <Compile Include="Common\PrimarySecReport.cs" />
     <Compile Include="Common\SSRIncentiveGroup.cs" />
     <Compile Include="Common\SSRIncentiveReport.cs" />
+    <Compile Include="Common\SSRPerformanceReport.cs" />
     <Compile Include="DBClient.cs" />
     <Compile Include="Service1.svc.cs">
       <DependentUpon>Service1.svc</DependentUpon>
