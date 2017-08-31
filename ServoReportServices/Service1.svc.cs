@@ -203,19 +203,19 @@ namespace ServoReportServices
                 List<SSRPerformanceReport> Get_SSRPerformanceReport = new List<SSRPerformanceReport>();
 
                 Get_SSRPerformanceReport = (from DataRow dr in table1.Rows
-                                        select new SSRPerformanceReport()
-                                        {
-                                            Credit = Convert.ToString(dr["Credit"]),
-                                            Debit = Convert.ToString(dr["Debit"]),
-                                            EmployeeCode = Convert.ToString(dr["EmployeeCode"]),
-                                            EmployeeName = Convert.ToString(dr["EmployeeName"]),
-                                            Outstandings = Convert.ToString(dr["Outstandings"]),
-                                            Receipts = Convert.ToString(dr["Receipts"]),
-                                            SaleInLtr = Convert.ToString(dr["SaleInLtr"]),
-                                            SaleInRs = Convert.ToString(dr["SaleInRs"]),
-                                            
-                                        }).ToList();
-              
+                                            select new SSRPerformanceReport()
+                                            {
+                                                Credit = Convert.ToString(dr["Credit"]),
+                                                Debit = Convert.ToString(dr["Debit"]),
+                                                EmployeeCode = Convert.ToString(dr["EmployeeCode"]),
+                                                EmployeeName = Convert.ToString(dr["EmployeeName"]),
+                                                Outstandings = Convert.ToString(dr["Outstandings"]),
+                                                Receipts = Convert.ToString(dr["Receipts"]),
+                                                SaleInLtr = Convert.ToString(dr["SaleInLtr"]),
+                                                SaleInRs = Convert.ToString(dr["SaleInRs"]),
+
+                                            }).ToList();
+
 
                 return Get_SSRPerformanceReport;
 
@@ -228,6 +228,71 @@ namespace ServoReportServices
             finally
             {
                 con.Close();
+            }
+        }
+
+        public List<LedgerReport> Get_LedgerReport(string FrDt, string ToDt, string LedgerName)
+        {
+            try
+            {
+                string Query = " Select distinct month(entry_date) As[Month],substring(datename(month, entry_date), 0, 4) + ' ' + substring(datename(year, entry_date), 3, 4) entry_date,sum(Debit_Amount) Debit_Amount, " +
+                            " sum(Credit_Amount) Credit_Amount,year(entry_date) dateyear " +
+                            " from AccountsLedgerTable where 1 = 1 " +
+                            " and ledger_id = (select ledger_id from ledger_master where ledger_name = '" + LedgerName + "')  " +
+                            " and cast(floor(cast(Entry_Date as float)) as datetime) >= Convert(datetime, '" + FrDt + "', 101) " +
+                            " and cast(floor(cast(Entry_Date as float)) as datetime) <= Convert(datetime, '" + ToDt + "', 101) " +
+                            " group by year(entry_date),datename(year, entry_date),datename(month, entry_date), month(entry_date)" +
+                            " order by[Month] asc ";
+                DBClient db = new DBClient();
+
+                List<LedgerReport> Get_LedgerReport = new List<LedgerReport>();
+
+                DataTable table1 = db.GetDataTable(Query);
+
+                Get_LedgerReport = (from DataRow dr in table1.Rows
+                                    select new LedgerReport()
+                                    {
+                                        CreditAmount = Convert.ToString(dr["Credit_Amount"]),
+                                        DebitAmount = Convert.ToString(dr["Debit_Amount"]),
+                                        EntryDate = Convert.ToString(dr["entry_date"]),
+                                        Month = Convert.ToString(dr["Month"]),
+                                        Year = Convert.ToString(dr["dateyear"]),
+
+                                    }).ToList();
+                return Get_LedgerReport;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
+
+        public List<LedgerName> Get_LedgerNames()
+        {
+            try
+            {
+                string Query = " Select top 500 Ledger_Name + ':' + City As LN from Ledger_master lm,Customer c where c.cust_name = lm.Ledger_Name " +
+                                " union " +
+                                " Select top 500 Ledger_Name + ':' from Ledger_master AS LN where ledger_name not in(select cust_name from customer) " +
+                                " Order By LN ";
+                DBClient db = new DBClient();
+
+                List<LedgerName> Get_LedgerName = new List<LedgerName>();
+
+                DataTable table1 = db.GetDataTable(Query);
+
+                Get_LedgerName = (from DataRow dr in table1.Rows
+                                  select new LedgerName()
+                                  {
+                                      LName = Convert.ToString(dr["LN"])
+
+                                  }).ToList();
+                return Get_LedgerName;
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
     }

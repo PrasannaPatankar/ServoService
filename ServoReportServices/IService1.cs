@@ -40,6 +40,16 @@ namespace ServoReportServices
         [WebInvoke(Method = "GET", BodyStyle = WebMessageBodyStyle.Bare, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json,
         UriTemplate = "/Get_UserID/{Username}/{Password}/{Role}")]
         string Get_UserID(string Username, string Password, string Role);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", BodyStyle = WebMessageBodyStyle.Bare, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json,
+        UriTemplate = "/Get_LedgerReport/{FrDt}/{ToDt}/{LedgerName}")]
+        List<LedgerReport> Get_LedgerReport(string FrDt, string ToDt, string LedgerName);
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", BodyStyle = WebMessageBodyStyle.Bare, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json,
+        UriTemplate = "/Get_LedgerNames")]
+        List<LedgerName> Get_LedgerNames();
     }
 
 

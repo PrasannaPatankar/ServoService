@@ -68,8 +68,9 @@ namespace TrackingServices
 
         public DataSet GetDataSet(string Query_)
         {
-            SqlDataAdapter dr = new SqlDataAdapter(Query_, ConnectionString);
+            SqlDataAdapter dr = new SqlDataAdapter(Query_, ConnectionString);            
             DataSet ds = new DataSet();
+            dr.Fill(ds);
             return ds;
         }
 
