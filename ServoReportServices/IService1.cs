@@ -50,6 +50,11 @@ namespace ServoReportServices
         [WebInvoke(Method = "GET", BodyStyle = WebMessageBodyStyle.Bare, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json,
         UriTemplate = "/Get_LedgerNames")]
         List<LedgerName> Get_LedgerNames();
+
+        [OperationContract]
+        [WebInvoke(Method = "GET", BodyStyle = WebMessageBodyStyle.Bare, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json,
+        UriTemplate = "/Get_PartyNames/{PageIndex}/{PageSize}")]
+        List<LedgerName> Get_PartyNames(string PageIndex, string PageSize);
     }
 
 
