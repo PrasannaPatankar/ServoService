@@ -332,6 +332,41 @@ namespace ServoReportServices
             }
         }
 
+        public List<LedgerName> Get_PartyNamesAuto(string PageIndex, string PageSize, string strSearch)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                con = new SqlConnection("Data Source = IDTP362;Initial Catalog = ServoNew; User ID = sa; Password=synerzip");
+                cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "GetPartyNamesAuto";
+                cmd.Connection = con;
 
+                cmd.Parameters.Add(new SqlParameter("@PageIndex", SqlDbType.VarChar, 20)).Value = PageIndex;
+                cmd.Parameters.Add(new SqlParameter("@PageSize", SqlDbType.VarChar, 20)).Value = PageSize;
+                cmd.Parameters.Add(new SqlParameter("@PageCount", SqlDbType.VarChar, 20)).Value = 10;
+                cmd.Parameters.Add(new SqlParameter("@PName", SqlDbType.VarChar, 20)).Value = strSearch;
+                adapt = new SqlDataAdapter();
+                adapt.SelectCommand = cmd;
+                adapt.Fill(ds);
+                DataTable table1 = new DataTable();
+                table1 = ds.Tables[0];
+
+                List<LedgerName> LstNames = new List<LedgerName>();
+
+                LstNames = (from DataRow dr in table1.Rows
+                            select new LedgerName()
+                            {
+                                LName = Convert.ToString(dr["Ledger_Name"])
+                            }).ToList();
+
+                return LstNames;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }
