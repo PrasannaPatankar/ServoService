@@ -272,9 +272,9 @@ namespace ServoReportServices
         {
             try
             {
-                string Query = " Select top 500 Ledger_Name + ':' + City As LN from Ledger_master lm,Customer c where c.cust_name = lm.Ledger_Name " +
+                string Query = " Select top 10 Ledger_Name + ':' + City As LN from Ledger_master lm,Customer c where c.cust_name = lm.Ledger_Name " +
                                 " union " +
-                                " Select top 500 Ledger_Name + ':' from Ledger_master AS LN where ledger_name not in(select cust_name from customer) " +
+                                " Select top 10 Ledger_Name + ':' from Ledger_master AS LN where ledger_name not in(select cust_name from customer) " +
                                 " Order By LN ";
                 DBClient db = new DBClient();
 
