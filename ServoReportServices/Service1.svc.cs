@@ -336,6 +336,8 @@ namespace ServoReportServices
         {
             try
             {
+                if (string.IsNullOrEmpty(strSearch))
+                    strSearch = "";
                 DataSet ds = new DataSet();
                 con = new SqlConnection("Data Source = IDTP362;Initial Catalog = ServoNew; User ID = sa; Password=synerzip");
                 cmd = new SqlCommand();
